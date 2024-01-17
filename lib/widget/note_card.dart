@@ -57,20 +57,24 @@ class _NotesCardState extends State<NotesCard> {
               color: AppStyle.cardsColor[widget.note.color_id],
               borderRadius: BorderRadius.circular(15)),
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(20.0, 30, 20, 10),
+            padding: const EdgeInsets.all(20),
+            // padding: const EdgeInsets.fromLTRB(20.0, 30, 20, 15),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  widget.note.title,
-                  style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: AppStyle.maincolor),
-                  maxLines: 2,
-                ),
-                SizedBox(
-                  height: 8,
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      widget.note.title,
+                      style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: AppStyle.maincolor),
+                      maxLines: 2,
+                    ),
+                  ],
                 ),
                 Text(
                   widget.note.description,

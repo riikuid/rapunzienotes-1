@@ -113,7 +113,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   )
                 : Container(
-                    margin: EdgeInsets.symmetric(horizontal: 30),
+                    margin: EdgeInsets.symmetric(
+                      horizontal: 30,
+                    ),
                     child: GridView.builder(
                       physics: BouncingScrollPhysics(
                         parent: AlwaysScrollableScrollPhysics(),
