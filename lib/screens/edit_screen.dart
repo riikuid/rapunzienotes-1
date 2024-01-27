@@ -48,7 +48,7 @@ class _EditScreenState extends State<EditScreen> {
       backgroundColor: AppStyle.cardsColor[widget.note.color_id],
       appBar: AppBar(
         toolbarHeight: 80,
-        title: Text(
+        title: const Text(
           "EDIT NOTE",
           style: TextStyle(
               fontWeight: FontWeight.w500,
