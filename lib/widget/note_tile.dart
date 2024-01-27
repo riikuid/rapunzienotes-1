@@ -42,7 +42,7 @@ class _NoteTieState extends State<NoteTie> {
           color: Colors.white,
         ),
       ),
-      child: InkWell(
+      child: GestureDetector(
         onTap: () {
           Navigator.push(
             context,
@@ -52,34 +52,42 @@ class _NoteTieState extends State<NoteTie> {
         },
         child: Container(
           margin: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-          padding: const EdgeInsets.fromLTRB(20.0, 30, 20, 15),
+          padding: const EdgeInsets.fromLTRB(20.0, 20, 20, 15),
           width: double.infinity,
           decoration: BoxDecoration(
               color: AppStyle.cardsColor[widget.note.color_id],
               borderRadius: BorderRadius.circular(15)),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                widget.note.title,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: AppStyle.maincolor),
-                maxLines: 1,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  widget.note.title.isNotEmpty
+                      ? Text(
+                          widget.note.title,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: AppStyle.maincolor),
+                          maxLines: 1,
+                        )
+                      : const SizedBox(),
+                  widget.note.description.isNotEmpty
+                      ? Text(
+                          widget.note.description,
+                          style: TextStyle(
+                              fontSize: 14,
+                              color: AppStyle.maincolor,
+                              height: 1.5),
+                          maxLines: 3,
+                          overflow: TextOverflow.ellipsis,
+                        )
+                      : const SizedBox(),
+                ],
               ),
-              SizedBox(
-                height: 8,
-              ),
-              Text(
-                widget.note.description,
-                style: TextStyle(
-                    fontSize: 16, color: AppStyle.maincolor, height: 1.5),
-                maxLines: 3,
-                overflow: TextOverflow.ellipsis,
-              ),
-              SizedBox(height: 10),
               Text(
                 widget.note.createdTime,
                 style: TextStyle(

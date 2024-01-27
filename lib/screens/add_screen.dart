@@ -4,12 +4,35 @@ import 'package:provider/provider.dart';
 import 'package:noteapputs/app_style.dart';
 import 'dart:math';
 
-class AddScreen extends StatelessWidget {
+class AddScreen extends StatefulWidget {
+  @override
+  State<AddScreen> createState() => _AddScreenState();
+}
+
+class _AddScreenState extends State<AddScreen> {
   int color_id = Random().nextInt(AppStyle.cardsColor.length);
+
+  bool isLoading = false;
+
   @override
   Widget build(BuildContext context) {
-    late String titleText;
-    late String descriptionText;
+    // late String titleText;
+    TextEditingController titleController = TextEditingController(text: "");
+    TextEditingController descriptionController =
+        TextEditingController(text: "");
+
+    // late String descriptionText;
+    NoteOperation noteOperation = Provider.of<NoteOperation>(context);
+
+    handleSave() async {
+      setState(() {
+        isLoading = true;
+      });
+      await Provider.of<NoteOperation>(context, listen: false).addNewNote(
+          titleController.text, descriptionController.text, color_id);
+      Navigator.pop(context);
+    }
+
     return Scaffold(
       backgroundColor: AppStyle.cardsColor[color_id],
       appBar: AppBar(
@@ -50,9 +73,7 @@ class AddScreen extends StatelessWidget {
                 fontWeight: FontWeight.bold,
                 color: AppStyle.maincolor,
               ),
-              onChanged: (value) {
-                titleText = value;
-              },
+              controller: titleController,
             ),
             Expanded(
               child: TextField(
@@ -71,9 +92,7 @@ class AddScreen extends StatelessWidget {
                   height: 1.5,
                   color: AppStyle.maincolor,
                 ),
-                onChanged: (value) {
-                  descriptionText = value;
-                },
+                controller: descriptionController,
               ),
             ),
             SizedBox(
@@ -95,18 +114,18 @@ class AddScreen extends StatelessWidget {
                     ]),
                 child: Center(
                   child: GestureDetector(
-                    onTap: () {
-                      Provider.of<NoteOperation>(context, listen: false)
-                          .addNewNote(titleText, descriptionText, color_id);
-                      Navigator.pop(context);
-                    },
-                    child: Text(
-                      'SAVE NOTE',
-                      style: TextStyle(
-                          color: Colors.black87,
-                          wordSpacing: 2,
-                          letterSpacing: 2),
-                    ),
+                    onTap: handleSave,
+                    child: isLoading
+                        ? Center(
+                            child: CircularProgressIndicator(),
+                          )
+                        : Text(
+                            'SAVE NOTE',
+                            style: TextStyle(
+                                color: Colors.black87,
+                                wordSpacing: 2,
+                                letterSpacing: 2),
+                          ),
                   ),
                 ),
               ),

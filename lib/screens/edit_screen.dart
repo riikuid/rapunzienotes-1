@@ -14,16 +14,12 @@ class EditScreen extends StatefulWidget {
 }
 
 class _EditScreenState extends State<EditScreen> {
-  late String titleText;
-  late String descriptionText;
+  bool isLoading = false;
   late TextEditingController _descriptionController;
   late TextEditingController _titleController;
-
   @override
   void initState() {
     super.initState();
-    titleText = widget.note.title;
-    descriptionText = widget.note.description;
     _descriptionController =
         TextEditingController(text: widget.note.description);
     _titleController = TextEditingController(text: widget.note.title);
@@ -37,6 +33,17 @@ class _EditScreenState extends State<EditScreen> {
 
   @override
   Widget build(BuildContext context) {
+    NoteOperation noteOperation = Provider.of<NoteOperation>(context);
+
+    handleSave() async {
+      setState(() {
+        isLoading = true;
+      });
+      await noteOperation.editNote(
+          widget.note.id, _titleController.text, _descriptionController.text);
+      Navigator.pop(context);
+    }
+
     return Scaffold(
       backgroundColor: AppStyle.cardsColor[widget.note.color_id],
       appBar: AppBar(
@@ -77,11 +84,6 @@ class _EditScreenState extends State<EditScreen> {
                 fontWeight: FontWeight.bold,
                 color: AppStyle.maincolor,
               ),
-              onChanged: (value) {
-                setState(() {
-                  titleText = value;
-                });
-              },
               controller: _titleController,
             ),
             Expanded(
@@ -101,11 +103,6 @@ class _EditScreenState extends State<EditScreen> {
                   height: 1.5,
                   color: AppStyle.maincolor,
                 ),
-                onChanged: (value) {
-                  setState(() {
-                    descriptionText = value;
-                  });
-                },
                 controller: _descriptionController,
               ),
             ),
@@ -128,18 +125,18 @@ class _EditScreenState extends State<EditScreen> {
                     ]),
                 child: Center(
                   child: GestureDetector(
-                    onTap: () {
-                      Provider.of<NoteOperation>(context, listen: false)
-                          .editNote(widget.note.id, titleText, descriptionText);
-                      Navigator.pop(context);
-                    },
-                    child: Text(
-                      'UPDATE NOTE',
-                      style: TextStyle(
-                          color: Colors.black87,
-                          wordSpacing: 2,
-                          letterSpacing: 2),
-                    ),
+                    onTap: handleSave,
+                    child: isLoading
+                        ? Center(
+                            child: CircularProgressIndicator(),
+                          )
+                        : Text(
+                            'UPDATE NOTE',
+                            style: TextStyle(
+                                color: Colors.black87,
+                                wordSpacing: 2,
+                                letterSpacing: 2),
+                          ),
                   ),
                 ),
               ),

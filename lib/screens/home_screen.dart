@@ -62,7 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
               GestureDetector(
                 onTap: _toggleLayout,
                 child: Icon(
-                  isLayout ? Icons.list_alt_outlined : Icons.grid_view_rounded,
+                  isLayout ? Icons.grid_view_rounded : Icons.list_alt_outlined,
                   color: Colors.black54,
                 ),
               ),
@@ -123,6 +123,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       itemCount: data.getNotes.length,
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
+                        childAspectRatio: 1 / 1,
                       ),
                       itemBuilder: (context, index) {
                         return NoteTie(data.getNotes[index]);
